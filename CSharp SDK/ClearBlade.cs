@@ -144,7 +144,7 @@ namespace CSharp_SDK
             Util.setSystemSecret(SYSTEM_SECRET);
             masterSecret = null;
             uri = "https://platform.clearblade.com";
-            messageUrl = "tcp://platform.clearblade.com:1883";
+            messageUrl = "platform.clearblade.com";
             logging = false;
             callTimeOut = 30000;
 
@@ -199,7 +199,7 @@ namespace CSharp_SDK
             }
             else
             {
-                messageUrl = "tcp://staging.clearblade.com:1883";
+                messageUrl = "staging.clearblade.com";
             }
 
             if (timeout > 0)

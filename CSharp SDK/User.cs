@@ -62,10 +62,8 @@ namespace CSharp_SDK
             }
             else
             {
-                Console.WriteLine((string) result.getData());
                 JObject json = JObject.Parse((string)result.getData());
                 setAuthToken( (string)json["user_token"]);
-                Console.WriteLine("Auth Token:"+getAuthToken());
                 return true;
             }
         }
@@ -97,13 +95,39 @@ namespace CSharp_SDK
             }
             else
             {
-                Console.WriteLine((string)result.getData());
                 JObject json = JObject.Parse((string)result.getData());
                 setAuthToken((string)json["user_token"]);
                 return true;
             }
 
 
+        }
+
+        public bool logout(string uri)
+        {
+            request = new RequestEngine();
+            Console.WriteLine("Req URI: " + uri);
+            RequestProperties headers = new RequestProperties();
+            headers.setMethod("POST");
+            headers.setEndpoint("/api/v/1/user/logout");
+            headers.setUri(uri);
+
+
+            request.setHeaders(headers);
+
+            PlatformResponse<string> result = request.execute();
+            if (result.getError())
+            {
+                Util.logger("CBUserTask", "User call failed: " + result.getData(), true);
+                ClearBlade.setInitError(true);
+                return false;
+            }
+            else
+            {               
+                setAuthToken(null);
+                Console.WriteLine("User Logged out");
+                return true;
+            }
         }
     }
 }

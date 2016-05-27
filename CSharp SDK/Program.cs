@@ -22,7 +22,7 @@ namespace CSharp_SDK
             initOptions.Add("callTimeout",30000);
             initOptions.Add("allowUntrusted", false);
             ClearBlade clearblade = new ClearBlade();
-            clearblade.initialize(Systemkey, SystemSecret, InitCallback,initOptions);
+            clearblade.initialize(Systemkey, SystemSecret, InitCallback);
             
             //string parameters = "{\"name\":\"Ameya\"}";
             //ClearBladeCodeService code = new ClearBladeCodeService("tempServ", parameters);

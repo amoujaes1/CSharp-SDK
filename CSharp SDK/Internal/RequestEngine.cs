@@ -108,6 +108,8 @@ namespace CSharp_SDK.Internal
                 request.ContinueTimeout = this.headers.getTimeout();
                 request.Accept = "application/json";
 
+                bool isLogout = (reqUrl.Contains("/user/logout"));
+
                 bool isAuthOrReg = (reqUrl.Contains("/user/auth") ||
                                     reqUrl.Contains("/user/anon") ||
                                     reqUrl.Contains("/user/reg"));
@@ -116,10 +118,13 @@ namespace CSharp_SDK.Internal
                 {
                     request.Headers.Add("CLEARBLADE-SYSTEMKEY", Util.getSystemKey());
                     request.Headers.Add("CLEARBLADE-SYSTEMSECRET", Util.getSystemSecret());
-                }else if(authToken != null)
+                } else if (isLogout) {
+                    request.Headers.Add("CLEARBLADE-SYSTEMKEY", Util.getSystemKey());
+                    request.Headers.Add("CLEARBLADE-SYSTEMSECRET", Util.getSystemSecret());
+                    request.Headers.Add("ClearBlade-UserToken", authToken);
+                } else if (authToken != null)
                 {
                     request.Headers.Add("ClearBlade-UserToken", authToken);
-                    Console.WriteLine("Auth Token: "+authToken);
                 }
                 request.Headers.Add("Accept-Charset", charset);
 
@@ -132,7 +137,6 @@ namespace CSharp_SDK.Internal
                 var json = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
                 responseCode = (int)response.StatusCode;
-                Console.WriteLine("Response code " +responseCode);
                 if (responseCode / 100 == 2)
                 {  // If the response code is within 200 range success
                     result = new PlatformResponse<String>(err, json);
@@ -205,6 +209,8 @@ namespace CSharp_SDK.Internal
                 request.ContentLength = data.Length;
                 request.ContinueTimeout = this.headers.getTimeout();
                 request.Accept = "application/json";
+
+                bool isLogout = (reqUrl.Contains("/user/logout"));
                 bool isAuthOrReg = (reqUrl.Contains("/user/auth") ||
                                     reqUrl.Contains("/user/anon") ||
                                     reqUrl.Contains("/user/reg"));
@@ -214,10 +220,15 @@ namespace CSharp_SDK.Internal
                     request.Headers.Add("CLEARBLADE-SYSTEMKEY", Util.getSystemKey());
                     request.Headers.Add("CLEARBLADE-SYSTEMSECRET", Util.getSystemSecret());
                 }
+                else if (isLogout)
+                {
+                    request.Headers.Add("CLEARBLADE-SYSTEMKEY", Util.getSystemKey());
+                    request.Headers.Add("CLEARBLADE-SYSTEMSECRET", Util.getSystemSecret());
+                    request.Headers.Add("ClearBlade-UserToken", authToken);
+                }
                 else if (authToken != null)
                 {
                     request.Headers.Add("ClearBlade-UserToken", authToken);
-                    Console.WriteLine("Auth Token: " + authToken);
                 }
                 request.Headers.Add("Accept-Charset", charset);
 
